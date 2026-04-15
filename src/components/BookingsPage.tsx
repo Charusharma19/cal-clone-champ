@@ -50,23 +50,23 @@ export function BookingsPage() {
       transition={{ duration: 0.3 }}
     >
       <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm">
-        <div className="p-6">
-          <div className="flex items-start justify-between">
-            <div className="space-y-3 flex-1">
-              <div className="flex items-center gap-3">
+        <div className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="space-y-3 flex-1 min-w-0">
+              <div className="flex items-center gap-3 flex-wrap">
                 <motion.div
-                  className="h-4 w-4 rounded-full shadow-sm"
+                  className="h-4 w-4 rounded-full shadow-sm flex-shrink-0"
                   style={{ backgroundColor: booking.event_types?.color || "#2563eb" }}
                   whileHover={{ scale: 1.2 }}
                   transition={{ duration: 0.2 }}
                 />
-                <h3 className="text-lg font-bold text-slate-900">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 truncate">
                   {booking.event_types?.title || "Meeting"}
                 </h3>
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  className={`rounded-full px-2 sm:px-3 py-1 text-xs font-semibold flex-shrink-0 ${
                     booking.status === "confirmed"
                       ? "bg-green-100 text-green-800"
                       : booking.status === "cancelled"
@@ -77,30 +77,29 @@ export function BookingsPage() {
                   {booking.status}
                 </motion.span>
               </div>
-              <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600">
-                <span className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-blue-500" />
-                  {format(new Date(booking.start_time), "EEE, MMM d, yyyy")}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-xs sm:text-sm text-slate-600">
+                <span className="flex items-center gap-2 min-w-0">
+                  <Calendar className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                  <span className="truncate">{format(new Date(booking.start_time), "EEE, MMM d")}</span>
                 </span>
-                <span className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-purple-500" />
-                  {format(new Date(booking.start_time), "h:mm a")} –{" "}
-                  {format(new Date(booking.end_time), "h:mm a")}
+                <span className="flex items-center gap-2 min-w-0">
+                  <Clock className="h-4 w-4 text-purple-500 flex-shrink-0" />
+                  <span className="truncate">{format(new Date(booking.start_time), "h:mm a")} – {format(new Date(booking.end_time), "h:mm a")}</span>
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-6 text-sm text-slate-600">
-                <span className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-green-500" />
-                  {booking.booker_name}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-xs sm:text-sm text-slate-600">
+                <span className="flex items-center gap-2 min-w-0">
+                  <User className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <span className="truncate">{booking.booker_name}</span>
                 </span>
-                <span className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-orange-500" />
-                  {booking.booker_email}
+                <span className="flex items-center gap-2 min-w-0">
+                  <Mail className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                  <span className="truncate text-xs">{booking.booker_email}</span>
                 </span>
                 {booking.event_types?.location && (
-                  <span className="flex items-center gap-2">
-                    <Video className="h-4 w-4 text-indigo-500" />
-                    {booking.event_types.location}
+                  <span className="flex items-center gap-2 min-w-0">
+                    <Video className="h-4 w-4 text-indigo-500 flex-shrink-0" />
+                    <span className="truncate">{booking.event_types.location}</span>
                   </span>
                 )}
               </div>
@@ -109,15 +108,16 @@ export function BookingsPage() {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                className="w-full sm:w-auto"
               >
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => handleCancel(booking.id)}
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-200"
+                  className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-200 py-2 sm:py-1"
                 >
                   <X className="mr-2 h-4 w-4" />
-                  Cancel
+                  <span className="sm:inline">Cancel</span>
                 </Button>
               </motion.div>
             )}
@@ -128,18 +128,18 @@ export function BookingsPage() {
   );
 
   return (
-    <div className="min-h-screen p-6 lg:p-8">
+    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-8"
+        className="mb-6 sm:mb-8"
       >
         <motion.h1
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
-          className="text-3xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent"
+          className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent"
         >
           Bookings
         </motion.h1>
@@ -147,7 +147,7 @@ export function BookingsPage() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="mt-2 text-slate-600"
+          className="mt-2 text-sm sm:text-base text-slate-600"
         >
           Manage your scheduled meetings and appointments.
         </motion.p>
@@ -158,7 +158,7 @@ export function BookingsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="mb-6 sm:mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
       >
         <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200/50">
           <div className="flex items-center gap-4">

@@ -121,19 +121,19 @@ export function EventTypesPage() {
   };
 
   return (
-    <div className="min-h-screen p-6 lg:p-8">
+    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-8 flex items-center justify-between"
+        className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0"
       >
-        <div>
+        <div className="flex-1">
           <motion.h1
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="text-3xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent"
+            className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent"
           >
             Event Types
           </motion.h1>
@@ -141,7 +141,7 @@ export function EventTypesPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="mt-2 text-slate-600"
+            className="mt-2 text-sm sm:text-base text-slate-600"
           >
             Create and manage your booking events with style and ease.
           </motion.p>
@@ -150,10 +150,11 @@ export function EventTypesPage() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
+          className="w-full sm:w-auto"
         >
           <Button
             onClick={openCreate}
-            className="gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-full sm:w-auto gap-2 sm:gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 py-3 sm:py-2 text-base sm:text-sm"
           >
             <motion.div
               whileHover={{ rotate: 90 }}
@@ -161,7 +162,7 @@ export function EventTypesPage() {
             >
               <Plus className="h-5 w-5" />
             </motion.div>
-            Create Event
+            <span>Create Event</span>
           </Button>
         </motion.div>
       </motion.div>
@@ -171,7 +172,7 @@ export function EventTypesPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.5 }}
-        className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6"
+        className="mb-6 sm:mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
       >
         <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200/50">
           <div className="flex items-center gap-4">
