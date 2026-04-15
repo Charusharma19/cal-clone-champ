@@ -3,5 +3,14 @@
   "name": "tanstack-start-app",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
+  "main": "@tanstack/react-start/server-entry",
+  "env": {
+    "production": {
+      "vars": {
+        "VITE_SUPABASE_URL": "https://maozuqwcpojeeqboepms.supabase.co",
+        "VITE_SUPABASE_PUBLISHABLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hb3p1cXdjcG9qZWVxYm9lcG1zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxODA5NzYsImV4cCI6MjA5MTc1Njk3Nn0.2mMLiy4KeAWiBRkBd3ZNLIh-eS67_Z0D-Vj1uzgm67M",
+        "VITE_SUPABASE_PROJECT_ID": "maozuqwcpojeeqboepms"
+      }
+    }
+  }
 }
