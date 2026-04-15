@@ -24,6 +24,7 @@ Try the app now! Create events, manage bookings, and explore the beautiful respo
 - **Real-time Updates** - Live data synchronization with Supabase backend
 - **Authentication** - Secure user authentication and session management
 
+<<<<<<< HEAD
 ## 📌 Complete Booking Flow
 
 CalSync provides a polished end-to-end booking experience for users and customers.
@@ -39,6 +40,8 @@ CalSync provides a polished end-to-end booking experience for users and customer
 
 This flow ensures visitors can quickly book appointments through the public booking page with a clean, guided experience.
 
+=======
+>>>>>>> 287493423b06eb060bc434845571765defa1a5b9
 ## 🏗️ Tech Stack
 
 ### Frontend
