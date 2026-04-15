@@ -126,6 +126,28 @@ export async function createBooking(booking: TablesInsert<"bookings">) {
   return data;
 }
 
+export async function isBookingSlotAvailable(
+  eventTypeId: string,
+  startTime: string,
+  endTime: string
+) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("start_time, end_time")
+    .eq("event_type_id", eventTypeId)
+    .eq("status", "confirmed");
+  if (error) throw error;
+
+  const requestedStart = new Date(startTime);
+  const requestedEnd = new Date(endTime);
+
+  return !data.some((booking) => {
+    const bookingStart = new Date(booking.start_time);
+    const bookingEnd = new Date(booking.end_time);
+    return requestedStart < bookingEnd && requestedEnd > bookingStart;
+  });
+}
+
 export async function cancelBooking(id: string) {
   const { data, error } = await supabase
     .from("bookings")
@@ -135,6 +157,24 @@ export async function cancelBooking(id: string) {
     .single();
   if (error) throw error;
   return data;
+}
+
+export async function getAvailableTimeSlotsForEventType(
+  eventTypeId: string,
+  date: Date,
+  durationMinutes: number,
+  timezone?: string
+) {
+  const schedule = await getDefaultSchedule();
+  const rules = await getAvailabilityRules(schedule.id);
+  const bookings = await getBookingsForEventType(eventTypeId);
+  return generateTimeSlots(
+    date,
+    rules,
+    bookings,
+    durationMinutes,
+    timezone || schedule.timezone
+  );
 }
 
 // Time slot generation

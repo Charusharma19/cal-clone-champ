@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Copy, ExternalLink, Pencil, Trash2, Clock, Video, Sparkles, Calendar, Users } from "lucide-react";
+import { Plus, Copy, ExternalLink, Pencil, Trash2, Clock, Video, Sparkles, Calendar, Users, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -313,9 +313,10 @@ export function EventTypesPage() {
                           <Video className="h-4 w-4" />
                           {et.location}
                         </span>
-                        <span className="font-mono text-xs bg-slate-100 px-2 py-1 rounded">
-                          /book/{et.slug}
-                        </span>
+                        <div className="flex items-center gap-2 bg-gradient-to-r from-blue-50 to-purple-50 px-3 py-1 rounded-lg border border-blue-200">
+                          <Globe className="h-3 w-3 text-blue-600" />
+                          <span className="font-mono text-xs text-blue-700">/book/{et.slug}</span>
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -327,6 +328,19 @@ export function EventTypesPage() {
                       </motion.div>
                       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                         <Button
+                          variant="outline"
+                          size="sm"
+                          asChild
+                          className="text-slate-700 border-blue-300 hover:bg-blue-50 hover:border-blue-400 transition-colors"
+                        >
+                          <a href={`/book/${et.slug}`} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-3 w-3 mr-1" />
+                            Book Page
+                          </a>
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                        <Button
                           variant="ghost"
                           size="icon"
                           onClick={() => copyLink(et.slug)}
@@ -334,17 +348,6 @@ export function EventTypesPage() {
                         >
                           <Copy className="h-4 w-4" />
                         </Button>
-                      </motion.div>
-                      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                        <a href={`/book/${et.slug}`} target="_blank" rel="noopener noreferrer">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="hover:bg-green-50 hover:text-green-600"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                          </Button>
-                        </a>
                       </motion.div>
                       <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                         <Button

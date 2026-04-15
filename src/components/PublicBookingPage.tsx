@@ -20,8 +20,9 @@ import {
   getDefaultSchedule,
   getAvailabilityRules,
   getBookingsForEventType,
+  getAvailableTimeSlotsForEventType,
+  isBookingSlotAvailable,
   createBooking,
-  generateTimeSlots,
   type EventType,
   type AvailabilityRule,
 } from "@/lib/queries";
@@ -44,6 +45,8 @@ export function PublicBookingPage({ slug }: { slug: string }) {
   const [step, setStep] = useState<BookingStep>("select");
   const [submitting, setSubmitting] = useState(false);
   const [confirmedBooking, setConfirmedBooking] = useState<any>(null);
+  const [timeSlots, setTimeSlots] = useState<string[]>([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -84,10 +87,39 @@ export function PublicBookingPage({ slug }: { slug: string }) {
     return rules.some((r) => r.day_of_week === dow && r.is_enabled);
   };
 
-  const timeSlots = useMemo(() => {
-    if (!selectedDate || !eventType) return [];
-    return generateTimeSlots(selectedDate, rules, bookings, eventType.duration_minutes, timezone);
-  }, [selectedDate, rules, bookings, eventType, timezone]);
+  useEffect(() => {
+    if (!selectedDate || !eventType) {
+      setTimeSlots([]);
+      return;
+    }
+
+    let mounted = true;
+    setSlotsLoading(true);
+
+    getAvailableTimeSlotsForEventType(
+      eventType.id,
+      selectedDate,
+      eventType.duration_minutes,
+      timezone
+    )
+      .then((slots) => {
+        if (!mounted) return;
+        setTimeSlots(slots);
+      })
+      .catch(() => {
+        if (!mounted) return;
+        toast.error("Failed to load time slots");
+        setTimeSlots([]);
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setSlotsLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [selectedDate, eventType, timezone]);
 
   const handleBook = async () => {
     if (!eventType || !selectedDate || !selectedTime || !name || !email) {
@@ -101,6 +133,17 @@ export function PublicBookingPage({ slug }: { slug: string }) {
       startTime.setHours(h, m, 0, 0);
       const endTime = new Date(startTime);
       endTime.setMinutes(endTime.getMinutes() + eventType.duration_minutes);
+
+      const slotAvailable = await isBookingSlotAvailable(
+        eventType.id,
+        startTime.toISOString(),
+        endTime.toISOString()
+      );
+
+      if (!slotAvailable) {
+        toast.error("This slot is already booked. Please choose another time.");
+        return;
+      }
 
       const booking = await createBooking({
         event_type_id: eventType.id,
@@ -294,7 +337,9 @@ export function PublicBookingPage({ slug }: { slug: string }) {
                     {format(selectedDate, "EEE, MMM d")}
                   </h3>
                   <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
-                    {timeSlots.length === 0 ? (
+                    {slotsLoading ? (
+                      <p className="text-xs text-muted-foreground">Loading slots...</p>
+                    ) : timeSlots.length === 0 ? (
                       <p className="text-xs text-muted-foreground">No available times</p>
                     ) : (
                       timeSlots.map((time) => (

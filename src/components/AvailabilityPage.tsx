@@ -34,6 +34,7 @@ const TIMEZONES = [
   "Pacific/Auckland",
 ];
 
+const WEEKDAYS = [1, 2, 3, 4, 5];
 const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
   const h = Math.floor(i / 2);
   const m = i % 2 === 0 ? "00" : "30";
@@ -96,6 +97,40 @@ export function AvailabilityPage() {
     }
   };
 
+  const handleSetWeekdays = async () => {
+    try {
+      await Promise.all(
+        rules.map((rule) =>
+          updateAvailabilityRule(rule.id, {
+            is_enabled: WEEKDAYS.includes(rule.day_of_week),
+          })
+        )
+      );
+      load();
+      toast.success("Business days enabled (Mon–Fri)");
+    } catch {
+      toast.error("Failed to update weekdays");
+    }
+  };
+
+  const handleSetBusinessHours = async () => {
+    try {
+      await Promise.all(
+        rules.map((rule) =>
+          updateAvailabilityRule(rule.id, {
+            start_time: "09:00",
+            end_time: "17:00",
+            is_enabled: WEEKDAYS.includes(rule.day_of_week),
+          })
+        )
+      );
+      load();
+      toast.success("Business hours set to 9 AM – 5 PM for weekdays");
+    } catch {
+      toast.error("Failed to apply business hours");
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-6 lg:p-8">
@@ -120,10 +155,13 @@ export function AvailabilityPage() {
       <div className="max-w-2xl space-y-6">
         {/* Timezone */}
         <Card className="p-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <Label className="text-sm font-medium">Timezone</Label>
+              <div>
+                <Label className="text-sm font-medium">Timezone</Label>
+                <p className="text-xs text-muted-foreground">Keep your schedule aligned with your local meeting zone.</p>
+              </div>
             </div>
             <Select value={schedule?.timezone} onValueChange={handleTimezoneChange}>
               <SelectTrigger className="w-60">
@@ -137,6 +175,23 @@ export function AvailabilityPage() {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+        </Card>
+
+        <Card className="p-4">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <h2 className="text-sm font-semibold text-foreground">Quick availability presets</h2>
+              <p className="text-xs text-muted-foreground">Enable business days and apply a standard 9 AM–5 PM schedule.</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button variant="secondary" onClick={handleSetWeekdays}>
+                Enable Mon–Fri
+              </Button>
+              <Button variant="secondary" onClick={handleSetBusinessHours}>
+                Set 9 AM – 5 PM
+              </Button>
+            </div>
           </div>
         </Card>
 
