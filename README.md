@@ -7,6 +7,12 @@ A beautiful, responsive calendar booking application built with modern web techn
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.2-06B6D4?logo=tailwindcss)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?logo=cloudflare)
 
+## 🌐 Live Demo
+
+**[👉 View Live Project](https://tanstack-start-app.cal-clone-champ.workers.dev)**
+
+Try the app now! Create events, manage bookings, and explore the beautiful responsive interface.
+
 ## ✨ Features
 
 - **Event Type Management** - Create and manage different event types with custom settings
